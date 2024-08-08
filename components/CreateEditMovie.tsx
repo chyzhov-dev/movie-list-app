@@ -40,7 +40,7 @@ export const CreateEditMovie: React.FC<CreateEditMovieProps> = ({ onSubmit, isLo
     resolver: zodResolver(movieSchema),
     defaultValues: {
       name: data?.name || '',
-      year: data?.year || 2021,
+      year: data?.year,
       base64preview: ''
     }
   });
@@ -76,11 +76,10 @@ export const CreateEditMovie: React.FC<CreateEditMovieProps> = ({ onSubmit, isLo
             <Controller
               name="year"
               control={control}
-              defaultValue={2021}
               render={({ field }) => {
                 return <Input
                   {...field}
-                  placeholder="Year"
+                  placeholder="Publishing year"
                   disabled={isLoading}
                   error={errors.year?.message}
                   onChange={(e) => {

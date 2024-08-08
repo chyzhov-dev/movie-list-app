@@ -15,7 +15,7 @@ export default async function EditPage({ params }: Params) {
   const data= await getData(+params.id);
   return (
     <div className="container mx-auto lg:p-20">
-      <h1 className="text-5xl">Edit </h1>
+      <h1 className="text-5xl mb-16">Edit </h1>
       <EditMovie
         id={+params.id}
         data={{

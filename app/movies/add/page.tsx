@@ -23,7 +23,7 @@ const CreatePage = () => {
   }
   return (
     <div className="container mx-auto lg:p-20">
-      <h1 className="text-5xl">Create a new movie </h1>
+      <h1 className="text-5xl mb-16">Create a new movie </h1>
       <CreateEditMovie onSubmit={onSubmit} isLoading={isLoading}/>
     </div>
   );

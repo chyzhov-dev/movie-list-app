@@ -2,6 +2,24 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
+## Copy .env.example to .env.local and fill in the values
+
+```bash
+cp .env.example .env.local
+````
+
+fill the values
+```text
+
+POSTGRES_URL=
+POSTGRES_DATABASE=
+```
+
+# Run to create drizzle schema
+```bash
+npx drizzle-kit push
+```
+
 First, run the development server:
 
 ```bash

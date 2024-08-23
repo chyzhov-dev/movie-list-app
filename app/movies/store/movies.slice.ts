@@ -3,7 +3,6 @@ import { RootState } from '@/store';
 import { Movie } from '@/app/movies/store/interfaces';
 import { fetchMovieList, findMovieById } from '@/app/movies/store/thunks';
 
-
 interface MoviesState {
   list: Movie[],
   isLoading: boolean,

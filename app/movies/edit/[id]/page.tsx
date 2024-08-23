@@ -2,10 +2,11 @@
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/hooks';
-import { CreateEditMovie, MoviePayload } from '@/components/CreateEditMovie';
+import { CreateEditMovie } from '@/app/movies/components/CreateEditMovie/CreateEditMovie';
 import { findMovieById, updateMovieById } from '@/app/movies/store/thunks';
 import { Header } from '@/components/Header';
 import { useTranslation } from 'react-i18next';
+import { MoviePayload } from '@/app/movies/components/CreateEditMovie/interfaces';
 
 export default function EditPage() {
 
@@ -34,7 +35,7 @@ export default function EditPage() {
   };
 
   return (
-    <div className="md:container mx-auto lg:p-20 sm:p-1 w-full">
+    <div className="md:container sm:p-1 w-full">
       <Header>
         {t('edit_movie')}
       </Header>

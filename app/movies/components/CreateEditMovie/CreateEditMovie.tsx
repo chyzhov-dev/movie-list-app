@@ -5,38 +5,20 @@ import { Button } from '@/components/Button';
 import { Controller, useForm } from 'react-hook-form';
 import { useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { getPoster } from '@/utils';
 import { useTranslation } from 'react-i18next';
+import { movieSchema } from '@/app/movies/components/CreateEditMovie/movieSchema';
+import { CreateEditMovieProps, MoviePayload } from '@/app/movies/components/CreateEditMovie/interfaces';
 
-export const movieSchema = z.object({
-  title: z.string().min(1, 'Name is required'),
-  year: z.number().min(1900, 'Year must be at least 1900').max(new Date().getFullYear(), `Year can't be in the future`),
-  base64preview: z.string().optional(),
-});
-
-interface CreateEditMovieProps {
-  onSubmit: (data: MoviePayload) => void;
-  isLoading?: boolean;
-  data?: MoviePayload
-}
-
-export type MoviePayload = {
-  title: string;
-  year: number;
-  base64preview?: string;
-  file?: File | null;
-  poster?: string;
-}
-
-export const CreateEditMovie: React.FC<CreateEditMovieProps> = ({ onSubmit, isLoading, data }: CreateEditMovieProps) => {
+export const CreateEditMovie = ({ onSubmit, isLoading, data, error }: CreateEditMovieProps) => {
   const [base64image, setBase64image] = useState<string | null>();
   const [file, setFile] = useState<File | null>(null);
   const router = useRouter();
   const { t } = useTranslation();
 
-  const onDrop = (file: File) => {const reader = new FileReader();
+  const onDrop = (file: File) => {
+    const reader = new FileReader();
     reader.onload = (e) => {
       setBase64image(e.target?.result as string);
     };
@@ -115,7 +97,7 @@ export const CreateEditMovie: React.FC<CreateEditMovieProps> = ({ onSubmit, isLo
           <div className='my-6 md:hidden'>
             <DragEndDrop onDrop={onDrop} value={preview}/>
           </div>
-          <div className="grid grid-cols-2 gap-4 my-10">
+          <div className="grid grid-cols-2 gap-4 my-6">
             <Button variant="outline" type="button" onClick={() => router.push('/movies')}>
               {t('cancel')}
             </Button>
@@ -123,6 +105,7 @@ export const CreateEditMovie: React.FC<CreateEditMovieProps> = ({ onSubmit, isLo
               {t('submit')}
             </Button>
           </div>
+          {error && <p className="my-3 text-red-500 text-center">{error}</p>}
         </div>
       </form>
     </div>

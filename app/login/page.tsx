@@ -75,7 +75,7 @@ const LoginPage = () => {
           <div className="text-center">
             {t('dont_have_account')} <a href="/register" className="underline">{t('register')}</a>
           </div>
-          <Button isLoading={isLoading} variant="primary" type="submit">{t('sign_in')}</Button>
+          <Button isLoading={isLoading} variant="primary" type="submit">{t('login')}</Button>
         </form>
       </div>
     </div>

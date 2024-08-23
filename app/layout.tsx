@@ -16,13 +16,8 @@ export default function RootLayout( { children}: PropsWithChildren ) {
     <html lang="en" className="relative">
     <body className={clsx('bg-background min-h-svh h-full')}>
     <Providers>
-      <div className={clsx('md:p-8 sm:p-2', 'z-50 mb-20')}>
-        <>
-          <span className="absolute right-1 top-1">
-            <LanguageSwitch/>
-          </span>
-          {children}
-        </>
+      <div className={clsx('md:p-8 sm:p-2', 'z-50')}>
+        {children}
       </div>
       <div className="absolute  bottom-0 left-0 overflow-hidden w-screen z-10 	">
         <BottomOverlay/>

@@ -2,6 +2,7 @@
 import { useRef, useState } from 'react';
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
+import { DropIcon } from '@/icons/DropIcon';
 
 interface DragEndDropProps  {
   onDrop: (files: File) => void;
@@ -9,7 +10,7 @@ interface DragEndDropProps  {
   className?: string;
 }
 
-export const DragEndDrop: React.FC<DragEndDropProps> = ({ onDrop, value = null, className }) => {
+export const DragEndDrop = ({ onDrop, value = null, className }: DragEndDropProps) => {
   const [preview, setPreview] = useState<string | null>(value);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { t } = useTranslation();
@@ -50,12 +51,6 @@ export const DragEndDrop: React.FC<DragEndDropProps> = ({ onDrop, value = null, 
     e.preventDefault();
   };
 
-  const clear = (e: React.MouseEvent<HTMLDivElement> ) => {
-    setPreview(null);
-    e.stopPropagation();
-    e.preventDefault();
-  }
-
   return (
     <div
       onDrop={handleDrop}
@@ -76,18 +71,7 @@ export const DragEndDrop: React.FC<DragEndDropProps> = ({ onDrop, value = null, 
       )}
       {!preview && (
         <>
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <g clipPath="url(#clip0_3_407)">
-              <path
-                d="M18 15V18H6V15H4V18C4 19.1 4.9 20 6 20H18C19.1 20 20 19.1 20 18V15H18ZM17 11L15.59 9.59L13 12.17V4H11V12.17L8.41 9.59L7 11L12 16L17 11Z"
-                fill="white"/>
-            </g>
-            <defs>
-              <clipPath id="clip0_3_407">
-                <rect width="24" height="24" fill="white"/>
-              </clipPath>
-            </defs>
-          </svg>
+          <DropIcon/>
           <span>{t('dragAndDrop')}</span>
         </>
       )}

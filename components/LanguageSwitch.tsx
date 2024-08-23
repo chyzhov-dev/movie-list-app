@@ -1,6 +1,5 @@
 'use client';
 import { useTranslation } from 'react-i18next';
-import { Button } from '@/components/Button';
 import { useCallback } from 'react';
 
 export const LanguageSwitch = () => {
@@ -15,10 +14,10 @@ export const LanguageSwitch = () => {
   , [i18n])
 
   return (
-    <Button onClick={switchLanguage}>
+    <div className="flex justify-center items-center cursor-pointer select-none" onClick={switchLanguage}>
       <span className="text-2xl">
         {i18n.language === 'en' ? '🇺🇸' : '🇺🇦'}
       </span>
-    </Button>
+    </div>
   )
 }

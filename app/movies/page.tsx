@@ -14,6 +14,7 @@ import { deleteToken } from '@/app/movies/actions';
 import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
 import { Header } from '@/components/Header';
+import { LanguageSwitch } from '@/components/LanguageSwitch';
 
 const ListPage = () => {
 
@@ -33,19 +34,27 @@ const ListPage = () => {
     router.push('/login');
   };
 
+  const hasMovies = !!movies.length;
+
   return (
     <div className="h-full">
-      <div className="flex justify-between items-center">
-        <h2 className="font-medium md:text-5xl sm:text-3xl flex items-center my-10 ml-2 ">
-          {t('my_movies')}
-          <a className="ml-2 hover:scale-105 transition duration-300 sm:scale-75 md:scale-100" href="movies/add">
-            <PlusButton/>
-          </a>
-        </h2>
-        <Button onClick={handleLogout} className="flex  align-middle justify-center items-center gap-1">
-          <span className="hidden md:block">{t('logout')}</span>
-          <LogoutIcon/>
-        </Button>
+      <div className={clsx('flex items-center', { 'justify-between': hasMovies, 'justify-end': !hasMovies  })}>
+        { hasMovies && (
+          <h2 className="font-medium md:text-5xl sm:text-3xl flex items-center my-10 ml-2 ">
+            {t('my_movies')}
+            <a className="ml-2 mt-1 hover:scale-105 transition duration-300 sm:scale-75 md:scale-100"
+               href="movies/add">
+              <PlusButton/>
+            </a>
+          </h2>
+        )}
+        <div className="flex">
+          <LanguageSwitch/>
+          <Button onClick={handleLogout} className="flex  align-middle justify-center items-center gap-1">
+            <span className="hidden md:block">{t('logout')}</span>
+            <LogoutIcon/>
+          </Button>
+        </div>
       </div>
 
       <div className={clsx('min-h-[75svh] flex flex-col ', { 'justify-center': !movies.length })}>

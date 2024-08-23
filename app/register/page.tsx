@@ -31,7 +31,7 @@ const RegisterPage = () => {
         router.push('/movies');
       }
     } catch (e: any) {
-      setError(e?.response?.data || 'An error occurred');
+      setError(e?.response?.data?.message || 'An error occurred');
     } finally {
       setIsLoading(false);
     }
@@ -59,8 +59,12 @@ const RegisterPage = () => {
           <Controller
             control={control}
             name="password"
-            render={( { field } ) => <Input {...field} error={error || ''} placeholder={t('password')}
-                                            type="password"/>}
+            render={( { field } ) =>
+              <Input {...field}
+                 error={error || ''}
+                 placeholder={t('password')}
+                 type="password"
+              />}
           />
           <Button isLoading={isLoading} variant="primary" type="submit">{t('register')}</Button>
           <div className="text-center">

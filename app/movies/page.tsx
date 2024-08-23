@@ -1,63 +1,74 @@
-'use server';
+'use client';
 import { MovieCard } from '@/components/MovieCard';
 import { PlusButton } from '@/components/PlusButton';
 import { Pagination } from '@/components/Pagination';
-import { getMovies } from '@/app/movies/actions/movieActions';
 import { Button } from '@/components/Button';
 import { LogoutIcon } from '@/components/icons/LogoutIcon';
+import { useAppDispatch, useAppSelector } from '@/hooks';
+import { selectMovies, selectPagination } from '@/app/movies/store/movies.slice';
+import { useEffect } from 'react';
+import { fetchMovieList } from '@/app/movies/store/thunks';
+import { getPoster } from '@/utils';
+import { useRouter } from 'next/navigation';
+import { deleteToken } from '@/app/movies/actions';
+import { useTranslation } from 'react-i18next';
+import clsx from 'clsx';
+import { Header } from '@/components/Header';
 
-interface Params {
-  searchParams: {
-    page: string
-    perPage: string
+const ListPage = () => {
+
+  const movies = useAppSelector(selectMovies);
+  const pagination = useAppSelector(selectPagination);
+  const router = useRouter();
+  const { t } = useTranslation();
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(fetchMovieList());
+  }, [ dispatch ]);
+
+  const handleLogout = async () => {
+    await deleteToken();
+    localStorage.removeItem('token');
+    router.push('/login');
   };
-}
 
-async function getData( page: number = 1, perPage: number = 4 ) {
-  return getMovies(page, perPage);
-}
-
-const ListPage = async ( { searchParams }: Params ) => {
-
-  const { page = 1, perPage = 6 } = searchParams;
-
-  const { movies, total } = await getData(+page, +perPage);
   return (
     <div className="h-full">
       <div className="flex justify-between items-center">
-        <h2 className="font-medium text-5xl flex items-center ">
-          My movies
-          <a className="ml-1 hover:scale-105 transition duration-300" href="movies/add">
+        <h2 className="font-medium md:text-5xl sm:text-3xl flex items-center my-10 ml-2 ">
+          {t('my_movies')}
+          <a className="ml-2 hover:scale-105 transition duration-300 sm:scale-75 md:scale-100" href="movies/add">
             <PlusButton/>
           </a>
         </h2>
-        <a href="/login">
-          <Button className="flex  align-middle justify-center items-center gap-1">
-            Logout
-            <LogoutIcon/>
-          </Button>
-        </a>
+        <Button onClick={handleLogout} className="flex  align-middle justify-center items-center gap-1">
+          <span className="hidden md:block">{t('logout')}</span>
+          <LogoutIcon/>
+        </Button>
       </div>
 
-      <div className="min-h-[85svh] flex flex-col justify-between ">
-        <div className="mt-8">
-          { !movies.length && (
-            <div className="flex gap-4 justify-center items-center">
-              <h2 className="text-6xl">
-                Your movie list is empty
-              </h2>
-              <Button variant="primary">Add a new movie</Button>
+      <div className={clsx('min-h-[75svh] flex flex-col ', { 'justify-center': !movies.length })}>
+        <div className="md:mt-8 sm:mt-2">
+          {!movies.length && (
+            <div className="flex flex-col gap-8 justify-center items-center">
+              <Header>
+                {t('empty_movies')}
+              </Header>
+              <a href="/movies/add">
+                <Button variant="primary">{t('add_movie')}</Button>
+              </a>
             </div>
-          ) }
+          )}
           <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 cursor-pointer">
             {movies.map(( movie ) => {
               return (
                 <a key={movie.id} href={`/movies/edit/${movie.id}`}>
                   <MovieCard
-                    title={movie.name}
+                    title={movie.title}
                     description={''}
                     year={+movie.year}
-                    image={movie.image || movie.base64preview || ''}
+                    image={getPoster(movie.poster)}
                   />
                 </a>
               );
@@ -66,9 +77,9 @@ const ListPage = async ( { searchParams }: Params ) => {
         </div>
         <div className="my-16">
           <Pagination
-            page={+page}
-            total={+total}
-            perPage={+perPage}
+            page={pagination.page}
+            total={pagination.total}
+            perPage={pagination.perPage}
           />
         </div>
       </div>

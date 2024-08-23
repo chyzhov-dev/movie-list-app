@@ -13,7 +13,7 @@ type FormValues = {
   password: string;
 }
 
-const LoginPage = () => {
+const RegisterPage = () => {
   const [ isLoading, setIsLoading ] = useState(false);
   const [ error, setError ] = useState<string | null>(null);
   const { control, handleSubmit, watch } = useForm<FormValues>();
@@ -24,14 +24,14 @@ const LoginPage = () => {
     setError(null);
     setIsLoading(true);
     try {
-      const response = await apiClient.post('auth/login', data);
+      const response = await apiClient.post('auth/register', data);
       if ( response.data ) {
         localStorage.setItem('token', response.data.accessToken);
         await setToken(response.data.accessToken);
         router.push('/movies');
       }
-    } catch (e) {
-      setError('Email or password is incorrect');
+    } catch (e: any) {
+      setError(e?.response?.data || 'An error occurred');
     } finally {
       setIsLoading(false);
     }
@@ -49,7 +49,7 @@ const LoginPage = () => {
   return (
     <div className="min-h-[75svh] min-w-screen flex justify-center items-center">
       <div className="max-h-fit min-w-80	">
-        <h1 className="text-6xl text-center p-4 my-4">{t('sign_in')}</h1>
+        <h1 className="text-6xl text-center p-4 my-4">{t('register_header')}</h1>
         <form className="flex flex-col gap-5" onSubmit={handleSubmit(onSubmit)}>
           <Controller
             control={control}
@@ -59,27 +59,17 @@ const LoginPage = () => {
           <Controller
             control={control}
             name="password"
-            render={( { field } ) =>
-              <Input {...field}
-                     error={error || ''}
-                     placeholder={t('password')}
-                     type="password"
-              />
-            }/>
-          <div className="flex  justify-center items-center">
-            <div className="flex justify-center items-center">
-              <input type="checkbox" className="m-2"/>
-              <label htmlFor="remember-me">{t('remember_me')}</label>
-            </div>
-          </div>
+            render={( { field } ) => <Input {...field} error={error || ''} placeholder={t('password')}
+                                            type="password"/>}
+          />
+          <Button isLoading={isLoading} variant="primary" type="submit">{t('register')}</Button>
           <div className="text-center">
-            {t('dont_have_account')} <a href="/register" className="underline">{t('register')}</a>
+            {t('already_have_account')} <a href="/login" className="underline">{t('login')}</a>
           </div>
-          <Button isLoading={isLoading} variant="primary" type="submit">{t('sign_in')}</Button>
         </form>
       </div>
     </div>
   );
 };
 
-export default LoginPage;
+export default RegisterPage;

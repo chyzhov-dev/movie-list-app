@@ -17,10 +17,10 @@ const config: Config = {
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
       screens: {
-        sm: '420px',
+        sm: '360px',
         md: '768px',
         lg: '976px',
-        xl: '1440px',
+        xl: '1441px',
       },
       colors: {
         primary: '#2BD17E',

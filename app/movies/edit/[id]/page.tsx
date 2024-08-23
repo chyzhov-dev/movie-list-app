@@ -1,28 +1,46 @@
-import { findMovie } from '@/app/movies/actions/movieActions';
-import { EditMovie } from '@/app/movies/edit/[id]/edit';
+'use client';
+import { useParams, useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '@/hooks';
+import { CreateEditMovie, MoviePayload } from '@/components/CreateEditMovie';
+import { findMovieById, updateMovieById } from '@/app/movies/store/thunks';
+import { Header } from '@/components/Header';
+import { useTranslation } from 'react-i18next';
 
-interface Params {
-  params: {
-    id: string
-  }
-}
+export default function EditPage() {
 
-const getData = async (id: number) => {
-  return findMovie(id)
-}
+  const params = useParams();
+  const dispatch = useAppDispatch();
+  const { t } = useTranslation();
+  const selected = useAppSelector(state => state.movies.selected);
 
-export default async function EditPage({ params }: Params) {
-  const data= await getData(+params.id);
+  useEffect(() => {
+    dispatch(findMovieById(+params.id));
+  }, [ params.id, dispatch ]);
+
+  const [ isLoading, setIsLoading ] = useState(false);
+  const router = useRouter();
+  const onSubmit = async ( data: MoviePayload ) => {
+    try {
+      setIsLoading(true);
+      await dispatch(updateMovieById({
+        id: +params.id,
+        ...data
+      }));
+      router.push('/movies');
+    } catch (e) {
+      alert('An error occurred');
+    }
+  };
+
   return (
-    <div className="container mx-auto lg:p-20">
-      <h1 className="text-5xl mb-16">Edit </h1>
-      <EditMovie
-        id={+params.id}
-        data={{
-        name: data.name,
-        year: data.year,
-        base64preview: data.base64preview || ''
-      }}
-      />
+    <div className="md:container mx-auto lg:p-20 sm:p-1 w-full">
+      <Header>
+        {t('edit_movie')}
+      </Header>
+      {selected && (
+        <CreateEditMovie onSubmit={onSubmit} data={selected} isLoading={isLoading}/>
+      )}
     </div>
-  )}
+  );
+}

@@ -1,24 +1,28 @@
-import type { Metadata } from "next";
-import clsx from "clsx";
-import { Inter } from "next/font/google";
+import type { Metadata } from 'next';
+import clsx from 'clsx';
 import { BottomOverlay } from '@/components/BottomOverlay';
-import "./globals.css";
+import './globals.css';
+import { Providers } from '@/app/providers';
+import { LanguageSwitch } from '@/components/LanguageSwitch';
+import { PropsWithChildren } from 'react';
 
 export const metadata: Metadata = {
-  title: "Movie list",
-  description: "Effortlessly add and manage personalized movie lists",
+  title: 'Movie list',
+  description: 'Effortlessly add and manage personalized movie lists',
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout( { children}: PropsWithChildren ) {
   return (
     <html lang="en" className="relative">
-    <body className={clsx( 'bg-background min-h-svh h-full')}>
-      <div className={clsx('p-8', 'z-50 mb-20')}>
-        {children}
+    <body className={clsx('bg-background min-h-svh h-full')}>
+    <Providers>
+      <div className={clsx('md:p-8 sm:p-2', 'z-50 mb-20')}>
+        <>
+          <span className="absolute right-1 top-1">
+            <LanguageSwitch/>
+          </span>
+          {children}
+        </>
       </div>
       <div className="absolute  bottom-0 left-0 overflow-hidden w-screen z-10 	">
         <BottomOverlay/>
@@ -26,8 +30,8 @@ export default function RootLayout({
           <BottomOverlay/>
         </div>
       </div>
+    </Providers>
     </body>
     </html>
   );
-
 }

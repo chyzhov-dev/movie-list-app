@@ -1,17 +1,18 @@
 'use client';
 import { useRef, useState } from 'react';
-import { Button } from '@/components/Button';
 import clsx from 'clsx';
+import { useTranslation } from 'react-i18next';
+
 interface DragEndDropProps  {
   onDrop: (files: File) => void;
-  value?: string;
+  value?: string | null;
   className?: string;
 }
 
 export const DragEndDrop: React.FC<DragEndDropProps> = ({ onDrop, value = null, className }) => {
   const [preview, setPreview] = useState<string | null>(value);
-
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { t } = useTranslation();
 
   const createPreview = (file: File) => {
     const reader = new FileReader();
@@ -60,7 +61,7 @@ export const DragEndDrop: React.FC<DragEndDropProps> = ({ onDrop, value = null, 
       onDrop={handleDrop}
       onDragOver={handleDragOver}
       onClick={() => fileInputRef.current?.click()}
-      className={clsx(' aspect-square border-2 border-dashed border-gray-300 flex justify-center items-center flex-col rounded cursor-pointer', className)}
+      className={clsx(' aspect-square border-2 border-dashed bg-input border-gray-300 flex justify-center items-center flex-col rounded cursor-pointer', className)}
     >
       <input
         type="file"
@@ -71,14 +72,6 @@ export const DragEndDrop: React.FC<DragEndDropProps> = ({ onDrop, value = null, 
       {preview && (
         <div className='relative overflow-hidden'>
           <img src={preview} alt="preview" className="object-cover"/>
-          <div className='absolute top-2 right-2' onClick={clear}>
-            <Button
-              variant='outline'
-              className='bg-input rounded-full w-12 h-12 opacity-50 hover:opacity-100 transition duration-300'
-            >
-              X
-            </Button>
-          </div>
         </div>
       )}
       {!preview && (
@@ -95,7 +88,7 @@ export const DragEndDrop: React.FC<DragEndDropProps> = ({ onDrop, value = null, 
               </clipPath>
             </defs>
           </svg>
-          <span>Drop your files here</span>
+          <span>{t('dragAndDrop')}</span>
         </>
       )}
     </div>

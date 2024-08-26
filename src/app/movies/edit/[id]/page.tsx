@@ -34,8 +34,8 @@ const EditPage = (): ReactElement => {
       .catch(() => {
         toast(t('notification.update_error'), { type: 'error' });
       })
-      .then(() => {
-        toast(t('notification.update_success'), { type: 'success' });
+      .then((value: unknown) => {
+        value && toast(t('notification.update_success'), { type: 'success' });
         returnToList();
       });
   };
@@ -46,8 +46,8 @@ const EditPage = (): ReactElement => {
       .catch(() => {
         toast(t('notification.delete_error'), { type: 'error' });
       })
-      .then(() => {
-        toast(t('notification.delete_success'), { type: 'success' });
+      .then((value: unknown) => {
+        value && toast(t('notification.delete_success'), { type: 'success' });
         returnToList();
       });
   };

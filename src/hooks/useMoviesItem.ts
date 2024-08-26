@@ -41,7 +41,7 @@ export const useMoviesItem = (params: UseMoviesItemParams) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { id, ...rest } = data;
 
-    return dispatch(createMovie(rest));
+    return dispatch(createMovie(rest)).unwrap();
   };
 
   const update = async (data: CreateUpdateMoviePayload) => {
@@ -52,7 +52,7 @@ export const useMoviesItem = (params: UseMoviesItemParams) => {
     return dispatch(updateMovie({
       ...data,
       id,
-    }));
+    })).unwrap();
   };
 
   const remove = async () => {
@@ -60,7 +60,7 @@ export const useMoviesItem = (params: UseMoviesItemParams) => {
       return;
     }
 
-    return dispatch(deleteMovie(id));
+    return dispatch(deleteMovie(id)).unwrap();
   };
 
   const setId = (id: number) => {

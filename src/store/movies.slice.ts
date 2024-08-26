@@ -36,6 +36,7 @@ export const moviesSlice = createSlice({
     },
     clearItem: (state) => {
       state.item.data = null;
+      state.item.error = undefined;
     },
   },
   extraReducers: (builder) => {

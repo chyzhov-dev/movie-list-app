@@ -3,5 +3,5 @@ export const getPoster = (path?: string) => {
     return '/images/no-image.svg';
   }
 
-  return `${process.env.NEXT_PUBLIC_API_URL}/${path}`;
+  return `${process.env.NEXT_PUBLIC_API_URL}/uploads/${path}`;
 };

@@ -1,0 +1,147 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+@import 'react-toastify/dist/ReactToastify.css';
+
+/* -----------------------------------------------------------------------------------------------------*/
+/* @ TAILWIND                                                                                              */
+/* -----------------------------------------------------------------------------------------------------*/
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* -----------------------------------------------------------------------------------------------------*/
+/* @ COMMON                                                                                              */
+/* -----------------------------------------------------------------------------------------------------*/
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  font-family: 'Montserrat', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Montserrat', sans-serif !Important;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  input {
+    &:-webkit-autofill,
+    &:-webkit-autofill:hover,
+    &:-webkit-autofill:focus,
+    &:-webkit-autofill:active {
+      -webkit-box-shadow: 0 0 0 30px #224957 inset !important;
+      -webkit-text-fill-color: white !important;
+    }
+  }
+
+}
+
+/* -----------------------------------------------------------------------------------------------------*/
+/* @ WAVES                                                                                              */
+/* -----------------------------------------------------------------------------------------------------*/
+
+.waves {
+  position: relative;
+  width: 100%;
+  height: 15vh;
+  /*Fix for safari gap*/
+  margin-bottom: -7px;
+  min-height: 100px;
+  max-height: 150px;
+}
+
+.parallax > use {
+  animation: move-forever 25s cubic-bezier(.55, .5, .45, .5) infinite;
+}
+
+.parallax > use:nth-child(1) {
+  animation-delay: -2s;
+  animation-duration: 7s;
+}
+
+.parallax > use:nth-child(2) {
+  animation-delay: -3s;
+  animation-duration: 10s;
+}
+
+.parallax > use:nth-child(3) {
+  animation-delay: -4s;
+  animation-duration: 13s;
+}
+
+.parallax > use:nth-child(4) {
+  animation-delay: -5s;
+  animation-duration: 20s;
+}
+
+@keyframes move-forever {
+  0% {
+    transform: translate3d(-90px, 0, 0);
+  }
+  100% {
+    transform: translate3d(85px, 0, 0);
+  }
+}
+
+/*Shrinking for mobile*/
+@media (max-width: 768px) {
+  .waves {
+    /*height: 40px;*/
+    /*min-height: 40px;*/
+  }
+}
+
+/* -----------------------------------------------------------------------------------------------------*/
+/* @ SCROLL                                                                                              */
+/* -----------------------------------------------------------------------------------------------------*/
+
+
+:root {
+  --primary: #224957;
+  --secondary: #092C39;
+  --tertiary: #2BD17E;
+}
+
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 12px;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--primary);
+  border-radius: 5px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--secondary);
+  border-radius: 14px;
+  border: 3px solid var(--primary);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--tertiary);
+}
+
+/* Firefox */
+* {
+  /*scrollbar-width: thin;*/
+  /*scrollbar-color: var(--secondary) var(--primary);*/
+}

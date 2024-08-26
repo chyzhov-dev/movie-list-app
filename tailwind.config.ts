@@ -1,10 +1,10 @@
-import type { Config } from "tailwindcss";
+import type { Config } from 'tailwindcss';
 
 const config: Config = {
   content: [
-    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    './src//pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
     extend: {
@@ -12,15 +12,18 @@ const config: Config = {
         sans: ['Montserrat', 'sans-serif'],
       },
       backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+        'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
       screens: {
         sm: '360px',
         md: '768px',
         lg: '976px',
-        xl: '1441px',
+        xl: '1440px',
+      },
+      spacing: {
+        30: '7.5rem',
+        100: '25rem',
       },
       colors: {
         primary: '#2BD17E',
@@ -30,10 +33,11 @@ const config: Config = {
         card: '#092C39'
       },
       borderRadius: {
-        DEFAULT: '10px',
+        'lg2': '0.625rem'
       }
     },
   },
   plugins: [],
 };
+
 export default config;

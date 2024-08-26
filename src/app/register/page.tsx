@@ -38,7 +38,7 @@ const RegisterPage = (): ReactElement => {
 
   const onSubmit = async (data: LoginFormValues) => {
     auth
-      .login(data)
+      .registration(data)
       .catch(() => {
         toast(t('notification.register_error'), { type: 'error' });
       })

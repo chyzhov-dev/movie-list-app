@@ -10,7 +10,9 @@ cp .env.example .env.local
 
 fill the values
 ```text
-NEXT_PUBLIC_API_URL="http://localhost:3001"
+NEXT_PUBLIC_API_HOST=localhost
+NEXT_PUBLIC_API_PROTOCOL=http
+NEXT_PUBLIC_API_PORT=3001
 ```
 
 First, run the development server:

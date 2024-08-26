@@ -4,8 +4,8 @@ import {
   selectMoviesItemId,
   selectMoviesItemSelected,
   selectMoviesItemStatus
-} from '@/store/movies.slice';
-import { createMovie, deleteMovie, fetchMovieItem, updateMovie } from '@/store/thunks';
+} from '@/store/slices/movies.slice';
+import { moviesCreateThunk, moviesDeleteThunk, moviesFetchItemThunk, moviesUpdateThunk } from '@/store/thunks/movies.thunks';
 import { UseMoviesItemParams } from '@/types/hooks';
 import { CreateUpdateMoviePayload } from '@/types/store';
 import { debounce } from 'lodash';
@@ -34,14 +34,14 @@ export const useMoviesItem = (params: UseMoviesItemParams) => {
   }, [autoloadState, id]);
 
   const load = () => {
-    id && dispatch(fetchMovieItem(id));
+    id && dispatch(moviesFetchItemThunk(id));
   };
 
   const create = (data: CreateUpdateMoviePayload) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { id, ...rest } = data;
 
-    return dispatch(createMovie(rest)).unwrap();
+    return dispatch(moviesCreateThunk(rest)).unwrap();
   };
 
   const update = async (data: CreateUpdateMoviePayload) => {
@@ -49,7 +49,7 @@ export const useMoviesItem = (params: UseMoviesItemParams) => {
       return;
     }
 
-    return dispatch(updateMovie({
+    return dispatch(moviesUpdateThunk({
       ...data,
       id,
     })).unwrap();
@@ -60,7 +60,7 @@ export const useMoviesItem = (params: UseMoviesItemParams) => {
       return;
     }
 
-    return dispatch(deleteMovie(id)).unwrap();
+    return dispatch(moviesDeleteThunk(id)).unwrap();
   };
 
   const setId = (id: number) => {

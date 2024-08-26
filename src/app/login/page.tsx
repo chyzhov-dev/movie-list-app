@@ -1,17 +1,18 @@
 'use client';
-import { apiClient } from '@/utils/api';
 import { Button } from '@/components/Button';
 import { Checkbox } from '@/components/Checkbox';
 import { Input } from '@/components/Input';
 import { SimpleContainer } from '@/components/SimpleContainer';
+import { useAuth } from '@/hooks/useAuth';
 import { LoginFormValues } from '@/types/pages';
-import { setToken } from '@/utils/actions';
+import { Status } from '@/types/store';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ReactElement, useEffect, useState } from 'react';
+import { ReactElement } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import { z } from 'zod';
 
 const loginSchema = z.object({
@@ -25,10 +26,9 @@ const loginSchema = z.object({
 });
 
 const LoginPage = (): ReactElement => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const { t } = useTranslation();
+  const auth = useAuth();
   const { control, handleSubmit, watch, formState } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -38,33 +38,20 @@ const LoginPage = (): ReactElement => {
   });
 
   const onSubmit = async (data: LoginFormValues) => {
-    setError(null);
-    setIsLoading(true);
+    auth
+      .login(data)
+      .catch(() => {
+        toast(t('notification.auth_error'), { type: 'error' });
+      })
+      .then((value: unknown) => {
+        if (!value) {
+          return;
+        }
 
-    try {
-      const response = await apiClient.post('auth/login', data);
-
-      if (response.data) {
-        localStorage.setItem('token', response.data.accessToken);
-        await setToken(response.data.accessToken);
+        toast(t('notification.auth_success'), { type: 'success' });
         router.push('/movies');
-      }
-    } catch (e) {
-      setError('Email or password is incorrect');
-    } finally {
-      setIsLoading(false);
-    }
+      });
   };
-
-  useEffect(() => {
-    const subscription = watch(() => {
-      setError(null);
-    });
-
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, [watch]);
 
   return (
     <SimpleContainer
@@ -88,14 +75,18 @@ const LoginPage = (): ReactElement => {
           render={({ field }) => (
             <Input
               {...field}
-              error={formState.errors.password?.message || error || ''}
+              error={formState.errors.password?.message || auth.error || ''}
               placeholder={t('auth.password')}
               type="password"
             />
           )}
         />
         <Checkbox label={t('auth.remember_me')}/>
-        <Button isLoading={isLoading} variant="primary" type="submit">
+        <Button
+          isLoading={auth.status === Status.pending}
+          variant="primary"
+          type="submit"
+        >
           {t('auth.login')}
         </Button>
         <div className="text-center">

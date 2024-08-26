@@ -1,5 +1,11 @@
-import { RootState } from './store';
-import { fetchMovieList, fetchMovieItem, createMovie, updateMovie, deleteMovie } from '@/store/thunks';
+import { authSlice } from '@/store/slices/auth.slice';
+import {
+  moviesCreateThunk, moviesDeleteThunk,
+  moviesFetchItemThunk,
+  moviesFetchMovieList,
+  moviesUpdateThunk
+} from '@/store/thunks/movies.thunks';
+import { RootState } from '../store';
 import { MoviesState, Status } from '@/types/store';
 import { createSlice } from '@reduxjs/toolkit';
 
@@ -44,90 +50,96 @@ export const moviesSlice = createSlice({
     /* @ LIST                                                                                              */
     /* -----------------------------------------------------------------------------------------------------*/
 
-    builder.addCase(fetchMovieList.pending, (state) => {
+    builder.addCase(moviesFetchMovieList.pending, (state) => {
       state.list.status = Status.pending;
       state.list.error = undefined;
     });
-    builder.addCase(fetchMovieList.fulfilled, (state, action) => {
+    builder.addCase(moviesFetchMovieList.fulfilled, (state, action) => {
       state.list.entities = action.payload.data;
       state.list.total = action.payload.meta.total;
       state.list.limit = action.payload.meta.limit;
       state.list.status = Status.success;
     });
-    builder.addCase(fetchMovieList.rejected, (state, action) => {
+    builder.addCase(moviesFetchMovieList.rejected, (state, action) => {
       state.list.status = Status.error;
-      state.list.error = action.error.message;
+      state.list.error = action.payload?.message;
     });
 
     /* -----------------------------------------------------------------------------------------------------*/
     /* @ ITEM                                                                                              */
     /* -----------------------------------------------------------------------------------------------------*/
 
-    builder.addCase(fetchMovieItem.pending, (state) => {
+    builder.addCase(moviesFetchItemThunk.pending, (state) => {
       state.item.status = Status.pending;
       state.item.error = undefined;
       state.item.data = undefined;
     });
-    builder.addCase(fetchMovieItem.fulfilled, (state, action) => {
+    builder.addCase(moviesFetchItemThunk.fulfilled, (state, action) => {
       state.item.data = action.payload;
       state.item.status = Status.success;
     });
-    builder.addCase(fetchMovieItem.rejected, (state, action) => {
+    builder.addCase(moviesFetchItemThunk.rejected, (state, action) => {
       state.item.status = Status.error;
-      state.item.error = action.error.message;
+      state.item.error = action.payload?.message;
     });
 
     /* -----------------------------------------------------------------------------------------------------*/
     /* @ CREATE                                                                                              */
     /* -----------------------------------------------------------------------------------------------------*/
 
-    builder.addCase(createMovie.pending, (state) => {
+    builder.addCase(moviesCreateThunk.pending, (state) => {
       state.item.status = Status.pending;
       state.item.error = undefined;
     });
-    builder.addCase(createMovie.fulfilled, (state) => {
+    builder.addCase(moviesCreateThunk.fulfilled, (state) => {
       state.item.status = Status.success;
     });
-    builder.addCase(createMovie.rejected, (state, action) => {
+    builder.addCase(moviesCreateThunk.rejected, (state, action) => {
       state.item.status = Status.error;
-      state.item.error = action.error.message;
+      state.item.error = action.payload?.message;
     });
 
     /* -----------------------------------------------------------------------------------------------------*/
     /* @ UPDATE                                                                                              */
     /* -----------------------------------------------------------------------------------------------------*/
 
-    builder.addCase(updateMovie.pending, (state) => {
+    builder.addCase(moviesUpdateThunk.pending, (state) => {
       state.item.status = Status.pending;
       state.item.error = undefined;
     });
-    builder.addCase(updateMovie.fulfilled, (state) => {
+    builder.addCase(moviesUpdateThunk.fulfilled, (state) => {
       state.item.status = Status.success;
     });
-    builder.addCase(updateMovie.rejected, (state, action) => {
+    builder.addCase(moviesUpdateThunk.rejected, (state, action) => {
       state.item.status = Status.error;
-      state.item.error = action.error.message;
+      state.item.error = action.payload?.message;
     });
 
     /* -----------------------------------------------------------------------------------------------------*/
     /* @ DELETE                                                                                              */
     /* -----------------------------------------------------------------------------------------------------*/
 
-    builder.addCase(deleteMovie.pending, (state) => {
+    builder.addCase(moviesDeleteThunk.pending, (state) => {
       state.item.status = Status.pending;
       state.item.error = undefined;
     });
-    builder.addCase(deleteMovie.fulfilled, (state) => {
+    builder.addCase(moviesDeleteThunk.fulfilled, (state) => {
       state.item.status = Status.success;
     });
-    builder.addCase(deleteMovie.rejected, (state, action) => {
+    builder.addCase(moviesDeleteThunk.rejected, (state, action) => {
       state.item.status = Status.error;
-      state.item.error = action.error.message;
+      state.item.error = action.payload?.message;
+    });
+
+    /* -----------------------------------------------------------------------------------------------------*/
+    /* @ LOGOUT                                                                                              */
+    /* -----------------------------------------------------------------------------------------------------*/
+
+    builder.addCase(authSlice.actions.logout, () => {
+      return initialState;
     });
   }
 });
-
-export const { setSelected } = moviesSlice.actions;
 
 export const selectMoviesList = (state: RootState) => state.movies.list.entities;
 export const selectMoviesListStatus = (state: RootState) => state.movies.list.status;

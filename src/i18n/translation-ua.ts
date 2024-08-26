@@ -13,9 +13,12 @@ export const translationUa = {
     'update_success': 'Фільм оновлено',
     'create_success': 'Фільм створено',
     'delete_success': 'Фільм видалено',
+    'auth_success': 'Ласкаво просимо!',
     'update_error': 'Помилка оновлення фільму',
     'create_error': 'Помилка створення фільму',
     'delete_error': 'Помилка видалення фільму',
+    'auth_error': 'Помилка авторизації',
+    'register_error': 'Помилка реєстрації',
   },
   'form': {
     'title': 'Назва',

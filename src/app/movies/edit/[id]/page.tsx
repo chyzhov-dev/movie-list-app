@@ -35,7 +35,11 @@ const EditPage = (): ReactElement => {
         toast(t('notification.update_error'), { type: 'error' });
       })
       .then((value: unknown) => {
-        value && toast(t('notification.update_success'), { type: 'success' });
+        if (!value) {
+          return;
+        }
+
+        toast(t('notification.update_success'), { type: 'success' });
         returnToList();
       });
   };
@@ -47,7 +51,11 @@ const EditPage = (): ReactElement => {
         toast(t('notification.delete_error'), { type: 'error' });
       })
       .then((value: unknown) => {
-        value && toast(t('notification.delete_success'), { type: 'success' });
+        if (!value) {
+          return;
+        }
+
+        toast(t('notification.delete_success'), { type: 'success' });
         returnToList();
       });
   };

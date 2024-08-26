@@ -6,8 +6,8 @@ import {
   selectMoviesListPage,
   selectMoviesListStatus,
   selectMoviesListTotal
-} from '@/store/movies.slice';
-import { fetchMovieList } from '@/store/thunks';
+} from '@/store/slices/movies.slice';
+import { moviesFetchMovieList } from '@/store/thunks/movies.thunks';
 import { debounce } from 'lodash';
 import { useEffect, useState } from 'react';
 import { UseMoviesListParams } from '@/types/hooks';
@@ -36,7 +36,7 @@ export const useMoviesList = (params: UseMoviesListParams = {}) => {
   }, [autoloadState, page]);
 
   const load = () => {
-    dispatch(fetchMovieList({ page }));
+    dispatch(moviesFetchMovieList({ page }));
   };
 
   const changePage = (page: number) => {

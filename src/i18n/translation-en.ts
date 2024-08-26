@@ -13,9 +13,12 @@ export const translationEn = {
     'update_success': 'Movie updated',
     'create_success': 'Movie created',
     'delete_success': 'Movie deleted',
+    'auth_success': 'Welcome!',
     'update_error': 'Movie update error',
     'create_error': 'Movie create error',
     'delete_error': 'Movie delete error',
+    'auth_error': 'Auth error',
+    'register_error': 'Registration error',
   },
   'form': {
     'title': 'Title',

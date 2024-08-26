@@ -23,6 +23,12 @@ export interface MoviesState {
   };
 }
 
+export interface AuthState {
+  token: string | null;
+  status: Status;
+  error?: string;
+}
+
 export enum Status {
   unset = 'unset',
   pending = 'pending',
@@ -49,4 +55,18 @@ export interface MoviesListResponse {
 export interface FetchMovieListParams {
   page?: number;
   perPage?: number;
+}
+
+export interface AuthLoginPayload {
+  email: string;
+  password: string;
+}
+
+export interface AuthRegisterPayload {
+  email: string;
+  password: string;
+}
+
+export interface AuthResponse {
+  accessToken: string;
 }
